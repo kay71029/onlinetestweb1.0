@@ -4,8 +4,6 @@
   header('Content-Type: text/html; charset=utf-8');
   include("mysql.inc.php");
   require('defense.php');
-  
-
  
 ?>
 <!DOCTYPE html>
@@ -26,11 +24,9 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-        
       </button>
       <a class="navbar-brand" href="../User/Main">首頁</a>
     </div>
-
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
@@ -58,21 +54,26 @@
      <form action="GetScore" method="post">
       <div class="form-group">
         <?php 
+        //-----------------------------------------------------------------------------------------
+        //    get_random_nunber() 取得題庫的題目筆數
+        //   產生五個不會重複的亂數存到  $para_number_array[]陣列
+        //    宣告空的陣列[0,0,0,0,0] 將亂數放入
+        //------------------------------------------------------------------------------------------
             function get_random_nunber($para_number_array)
             {
-                 
+               // 取地目前的題庫題目數目 
              $str_sql_calc_no_of_qut= "SELECT count(*) from `questiondata`";
              $rec_set_int_no_of_qut= mysql_query($str_sql_calc_no_of_qut);
              $int_no_of_qut =1;
-             //echo $int_no_of_qut;
-                 
+    
                   while ($row = mysql_fetch_array($rec_set_int_no_of_qut))
                   {
                   //echo $row[0];//資料庫總筆數
                       $int_no_of_qut = $row[0];
                   } 
-                 
-                mt_srand((double)microtime()*1000000);
+              
+                 // 產生五個不會重複的亂數存到  $para_number_array[]陣列
+                mt_srand((double)microtime()*1000000);//以時間當亂數種子
                 $gonb=5;
                 $a=0;
                 while( !$para_number_array[$a] ){
@@ -80,30 +81,28 @@
                     if( $a > $gonb-1 ) break;
                     $sn = mt_rand(1,(int)$int_no_of_qut); 
                     
+                    //判斷亂數有沒有在陣列
                     if(!in_array($sn,$para_number_array)){
                     $para_number_array[$a]=$sn;
                     $a++;
                     }
-                }    
+                }
                 return $para_number_array;
              }
-             $rand_no_array = array(0,0,0,0,0);
+             $rand_no_array = array(0,0,0,0,0);//先宣告空的陣列
+            
              $rand_no_array = get_random_nunber($rand_no_array );
+        //-----------------------------------------------------------------------------------------
+        //   根據亂數陣列抓題目$i-1  ---因為陣列元素從0起算 ，撈出題目跟選項
+        //    跑for迴圈將題目列出來
+        //    $loopcounter++;//用來動態產生群族編號
+        //------------------------------------------------------------------------------------------      
              
-             // print_r($rand_no_array);
-            //  $str_sql_calc_no_of_qut= "SELECT count(*) from `questiondata`";
-            //  $int_no_of_qut= mysql_query($str_sql_calc_no_of_qut);
-            //  //echo $int_no_of_qut;
-            //   while ($row = mysql_fetch_array($int_no_of_qut))
-            //   {
-            //   //echo $row[0];//資料庫總筆數
-            //   }
+            
               $loopcounter = 0;
           for($i=1;$i<=5;$i++){
-            // mt_srand((double)microtime()*1000000);  //以時間當亂數種子
-          
-            //$randnumber= mt_rand(1,(int)$int_no_of_qut);//題目的總數跑亂數
-            //echo $randnumber;]
+           
+            //根據亂數陣列抓題目$i-1  ---因為陣列元素從0起算 勞出題目跟選項
             
              $question_data ="SELECT question, A, B,C, D from questiondata where q_id= {$rand_no_array[ $i-1 ]}";
              //echo $question_data;
@@ -115,56 +114,62 @@
                echo "<label>" . $rand_no_array[ $i-1 ] ."　　". $row1[0] . "</label>";
                echo "<div class=\"radio\">";
                echo "<label>";
-              $loopcounter++;
-             // echo  $loopcounter;
+             
+              $loopcounter++;//用來動態產生群族編號  ---4選1 
                echo "<input type=\"radio\" name=" . "\"group" . $loopcounter . "\"" . " value=\"A\">" . "(A) {$row1[1]} <br>";
                echo "</label>";
                echo "</div>";
                
                echo "<div class=\"radio\">";
                echo "<label>";
-             // $loopcounter = $loopcounter + 1;
+            
                echo "<input type=\"radio\" name=" . "\"group" . $loopcounter . "\"" . " value=\"B\" >" . "(B) {$row1[2]} <br>";
                echo "</label>";
                echo "</div>";
           
                echo "<div class=\"radio\">";
                echo "<label>";
-              //$loopcounter = $loopcounter + 1;
+              
                echo "<input type=\"radio\" name=" . "\"group" . $loopcounter . "\"" . " value=\"C\" >" . "(C) {$row1[3]} <br>";
                echo "</label>";
                echo "</div>";
                
                echo "<div class=\"radio\">";
                echo "<label>";
-              //$loopcounter = $loopcounter + 1;
+             
                echo "<input type=\"radio\" name=" . "\"group" . $loopcounter . "\"" . " value=\"D\" >" . "(D) {$row1[4]} <br>";
                echo "</label>";
                echo "</div>";
               
+              
               //取得課程編號 
               $sql_class_number = "SELECT number FROM class where class_id='".$_POST['class_choice']."'";
               $class_number = mysql_query($sql_class_number);
+              
               $classs_nu = 0;
               while($row_number = mysql_fetch_row( $class_number)){
                   $classs_nu = $row_number[0] ;
               }
-               
-                $inter_recode = "INSERT INTO recode(user_id, number, q_id, r_date) VALUES ('" . $_SESSION['user_id'] . "',  $classs_nu , {$rand_no_array[$i-1]}, '$datetime' )";
-               //echo $inter_recode;
-                $question_r2 = mysql_query($inter_recode);
-                 $str_q_id = "q_id_" . $i; 
-                  // echo $groupname;
-                  //echo  $_POST [$groupname]."<br>";
+             //----------------------------------------------------------------------------------------
+             // 將題目新增到 recode 表
+             //
+             //----------------------------------------------------------------------------------------
+             $inter_recode = "INSERT INTO recode(user_id, number, q_id, r_date) VALUES 
+                            ('" . $_SESSION['user_id'] . "',  $classs_nu , {$rand_no_array[$i-1]}, '$datetime' )";
+             $question_r2 = mysql_query($inter_recode);
+                 
+                $str_q_id = "q_id_" . $i; 
                 $_SESSION[$str_q_id]   = $rand_no_array[$i-1];
-                  // echo "PPP" . $_SESSION[$str_q_id]."PPP<br>";
+                 
             }
           }
+          //------------------------------------------------------------------------------------------------
+          //將考試日期 用$_SESSION 
+          //------------------------------------------------------------------------------------------------
             $_SESSION['r_date'] = $datetime;
-              //echo  $_SESSION['r_date']."<br>";
+            
             $_SESSION['number']= $classs_nu;
-              //echo $_SESSION['number']."<br>"; 
-             // echo  $_SESSION['q_id_$1'] . "<br>";
+             
          ?>
       </div>
       <p><input type="submit" name="sub"/></p></a></p>
