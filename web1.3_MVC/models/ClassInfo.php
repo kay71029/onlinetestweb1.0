@@ -56,7 +56,7 @@ class ClassInfo extends Database
     //class選單
     function StudentClass($id)
     {
-        $sql_se_cicl_sestr ="SELECT `cl`.`class_id`
+        $sql_se_cicl_sestr ="SELECT `cl`.`class_id`,`cl`.`number`
                        FROM `class_information` `ci`, `class` `cl`
                        WHERE `ci`.`number` = `cl`.`number` and `ci`.`user_id` = ? ";
         $result_se_cicl_sestr = $this-> getconn() -> prepare( $sql_se_cicl_sestr);

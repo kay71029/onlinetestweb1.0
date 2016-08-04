@@ -23,7 +23,6 @@ class Student extends Database
         
         $str_sql_insert_student = "INSERT INTO `student`( `user_id` ,  `user_name` )  
                              VALUES('$user_id', '$user_name')"; 
-                             
         $result_sql_insert_student = $this-> getconn() ->prepare($str_sql_insert_student);
         $result_sql_insert_student->execute();
         $result_se_student= $result_sql_insert_student->fetchAll(); 
@@ -35,10 +34,10 @@ class Student extends Database
      function Student_de($user_id) 
     {
        
-      $sql_de_student_str ="DELETE FROM `student` WHERE `user_id`='$user_id';";
-      $result_de_student_str= $this->getconn()->prepare($sql_de_student_str);
-      $result_de_student_str->execute();
-      $result_se=$result_de_student_str->fetchAll(); 
+        $sql_de_student_str ="DELETE FROM `student` WHERE `user_id`='$user_id';";
+        $result_de_student_str= $this->getconn()->prepare($sql_de_student_str);
+        $result_de_student_str->execute();
+        $result_se=$result_de_student_str->fetchAll(); 
        
     }
     
@@ -72,14 +71,13 @@ class Student extends Database
     //檢查資料
     function Check($id,$pw)
     {
-    $sql_se_student_str= "SELECT * FROM `student` where `user_id` = ? and `user_password` = ? ";
-    $result_se_student_str = $this-> getconn() ->prepare($sql_se_student_str);
-    $result_se_student_str->bindParam(1, $id, PDO::PARAM_STR);
-    $result_se_student_str->bindParam(2, $pw, PDO::PARAM_STR);
-    $result_se_student_str ->execute();
-    $result_se = $result_se_student_str->fetchAll();
-    
-     return $result_se;  
+        $sql_se_student_str= "SELECT * FROM `student` where `user_id` = ? and `user_password` = ? ";
+        $result_se_student_str = $this-> getconn() ->prepare($sql_se_student_str);
+        $result_se_student_str->bindParam(1, $id, PDO::PARAM_STR);
+        $result_se_student_str->bindParam(2, $pw, PDO::PARAM_STR);
+        $result_se_student_str ->execute();
+        $result_se = $result_se_student_str->fetchAll();
+        return $result_se;  
     }
 }
 

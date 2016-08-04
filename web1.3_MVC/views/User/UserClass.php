@@ -41,11 +41,11 @@
 <div class="panel-body">
   <div class="row">
     <div class="col-lg-6">
-      <form role="form" method ="post" action="../Exam/Exam">
+      <form role="form" method ="post" action="Exam1">
         <div class="form-group">
             <select class="form-control" name ="class_choice">
                <?php foreach($data as $row){?>
-                  <option><?PHP echo $row['class_id']; ?></option>
+                  <option><?PHP echo $row['number'].$row['class_id']; ?></option>
                  <?php } ?>
             </select>
         </div>

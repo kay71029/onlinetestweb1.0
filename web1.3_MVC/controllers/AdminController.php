@@ -20,7 +20,7 @@ class AdminController extends Controller {
       {
          $this->view("Admin/Login");
       }
-        $this->view("Admin/Login");
+         $this->view("Admin/Login");
         
     }
         
@@ -78,9 +78,8 @@ class AdminController extends Controller {
     //課程資料新增
     function AClassIn()
     {
-        
+         
         $class=$_POST["addclass"];
-        //$this-> defense();
         $user = $this->model("AClass");
         $user->AClass_in($class);
         $this->ClassAdd();
@@ -164,8 +163,8 @@ class AdminController extends Controller {
     {
         // $class=$_POST["addclass"];
         //$this-> defense();
-         $user_id = $_POST['user_id'];
-         $number =$_POST ['number'];
+        $user_id = $_POST['user_id'];
+        $number =$_POST ['number'];
         $user = $this->model("ClassInfo");
         $user->AddStudent($number,$user_id);
         $this->ClassInforAdd();
@@ -174,7 +173,6 @@ class AdminController extends Controller {
     function ClassInforCheck()
     {
         $this->defense();// 檢查是否合法登入
-        
         $user = $this->model("ClassInfo");
         $result_se_class_name= $user->ClassName();
         $this->view("Admin/ClassInforCheck",$result_se_class_name);
@@ -183,7 +181,6 @@ class AdminController extends Controller {
     function ClassInforCheckAJ()
     {
         $class_name=$_GET['class_name'];
-        // echo $class_name;
         $user = $this->model("ClassInfo");
         $result_se_class_name= $user->AJAX($class_name);
         $this->view("Admin/ajax",$result_se_class_name);
@@ -240,7 +237,6 @@ class AdminController extends Controller {
     function QuestionModify()
     {
         $qu_id = $_GET["chqu_id"];
-       // echo $_GET["chqu_id"];
         $user = $this->model("Question");
         $result_se= $user->Question_mo($qu_id);
         $this->view("Admin/QuestionModify",$result_se);
@@ -279,7 +275,6 @@ class AdminController extends Controller {
     function ScoreCheckAJ()
     {
         $class_name=$_GET['class_name'];
-        // echo $class_name;
         $user = $this->model("Recode");
         $result_se_class_name= $user->AJAX($class_name);
         $this->view("Admin/ajax2",$result_se_class_name);

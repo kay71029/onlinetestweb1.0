@@ -95,6 +95,8 @@ class UserController extends Controller {
     }
     
     
+    
+    
     function Logout()
     {
         session_destroy();
@@ -110,6 +112,53 @@ class UserController extends Controller {
           header("Location:../Home/index");
         }
     }
+    
+    
+    
+    function Exam1()
+    {
+        $this->defense();// 檢查是否合法登入
+        $id=$_SESSION['user_id'];
+        $user = $this->model("Question");
+        $result_se=$user->Question_count($id);
+        
+        $this->view("User/Exam1", $result_se);
+    }
+        
+    function GetScore()
+    {
+      
+      $id=$_SESSION['user_id'];
+      $datetime=$_POST['datetime'];
+      $number=$_POST['number'];
+      $number1=$_POST['number1'];
+      $number2=$_POST['number2'];
+      $number3=$_POST['number3'];
+      $number4=$_POST['number4'];
+      $class_number=$_POST['classnumber'];
+     
+      $Ans = $_POST ['Ans'];
+      $opno = $_POST['op$no'];
+      $Ans1 = $_POST ['Ans1'];
+      $opno1 = $_POST['op$no1'];
+      $Ans2 = $_POST ['Ans2'];
+      $opno2 = $_POST['op$no2'];
+      $Ans3 = $_POST ['Ans3'];
+      $opno3 = $_POST['op$no3'];
+      $Ans4 = $_POST ['Ans4'];
+      $opno4 = $_POST['op$no4'];
+        
+        $user = $this->model("Recode");
+        $result_se=$user->GetScore($id, $datetime,$number, $number1,$number2,$number3,$number4,$class_number,$Ans,$opno
+        ,$Ans1,$opno1,$Ans2,$opno2,$Ans3,$opno3,$Ans4,$opno4,$class_number);
+        
+         header("Location:Score");
+    }
 }
+
+
+
+ 
+    
 
 ?>

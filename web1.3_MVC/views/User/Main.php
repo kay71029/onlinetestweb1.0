@@ -1,4 +1,4 @@
-
+ 
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +33,7 @@
   </div><!-- /.container-fluid -->
 </nav>
   <div class="jumbotron">
-    <h1>Hello, <?PHP echo $row['user_name']; ?></h1>
+    <h1>Hello, <?PHP echo $data[0][1]; ?></h1>
       <p>測驗開始請勿隨意登出</p>
       <p><a class="btn btn-primary btn-lg" href="UserClass" role="button">測驗開始</a></p>
   </div>
